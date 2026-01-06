@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Na yêu - Final Fixed</title>
+    <title>Tặng bé zk nèee</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,7 +98,7 @@
     <div id="background-layer"></div><div id="noise-overlay"></div><div id="canvas-container"></div>
     <canvas id="visualizer-canvas"></canvas>
     <div id="ui-layer">
-        <h1 id="main-title">CAROT_PEN</h1>
+        <h1 id="main-title">Gift for u</h1>
         <div class="guide-container"><span class="guide-text" id="guide-text">Đang chuẩn bị...</span></div>
     </div>
     <div id="webcam-wrapper"><video id="webcam" autoplay playsinline muted></video><div id="status-bar">Init...</div></div>
@@ -469,7 +469,7 @@
             smoothedParallax.x += (handParallax.x - smoothedParallax.x) * 3.0 * dt; smoothedParallax.y += (handParallax.y - smoothedParallax.y) * 3.0 * dt;
             const tiltX = smoothedParallax.y * 0.3; const tiltY = smoothedParallax.x * 0.3; const breathingY = Math.sin(time * 0.5) * 0.1;
 
-            if (isLoadingDelay) { loadingDelayTime -= dt; if (loadingDelayTime <= 0) { isLoadingDelay = false; setGuide("Nắm tay <span class='highlight'>✊</span> để biến Cà rốt, hoặc ghép Tim 🫶"); } }
+            if (isLoadingDelay) { loadingDelayTime -= dt; if (loadingDelayTime <= 0) { isLoadingDelay = false; setGuide("Nắm tay <span class='highlight'>✊</span> để biến qua trang, hoặc ghép Tim 🫶"); } }
             const h1 = document.getElementById('main-title'); if(h1) { if(appState === 'READING_LETTER') h1.classList.add('hide-title'); else h1.classList.remove('hide-title'); }
 
             switch (appState) {
