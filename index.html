@@ -132,7 +132,7 @@
         const IMG_LETTER = './image/mess.png'; 
         const IMG_PHOTO_SINGLE = './image/photo.png';
         
-        const SLIDE_IMAGES = ['./image/1.png', './image/2.png', './image/3.png', './image/4.png', './image/5.png', './image/6.png'];
+        const SLIDE_IMAGES = ['./image/1.jpg', './image/2.jpeg', './image/3.jpg', './image/4.jpg', './image/5.jpg', './image/6.jpg'];
 
         let scene, camera, renderer, composer, clock, bloomPass;
         let mainGroup, instancedMesh, messageMesh, singlePhotoMesh, slideshowGroup; 
@@ -382,7 +382,7 @@
             textureLoader.load(IMG_LETTER, (tex) => {
                 const aspect = tex.image.width / tex.image.height; const h = 40; const w = h * aspect;
                 const geo = new THREE.PlaneGeometry(w, h);
-                const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 1, side: THREE.DoubleSide, depthTest: false, depthWrite: false });
+                const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: false, opacity: 1, side: THREE.DoubleSide, depthTest: false, depthWrite: false });
                 messageMesh = new THREE.Mesh(geo, mat); messageMesh.renderOrder = 999; messageMesh.position.set(0, -60, 25); messageMesh.scale.set(0,0,0); scene.add(messageMesh);
             }, undefined, (err) => console.log("Err mess"));
         }
