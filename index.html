@@ -104,7 +104,8 @@
     <div id="webcam-wrapper"><video id="webcam" autoplay playsinline muted></video><div id="status-bar">Init...</div></div>
     
     <audio id="audio-bg" src="./audio.m4a" loop></audio>
-    
+    <audio id="audio-letter" src="./audio2.mp3" loop></audio>
+
     <script type="module">
         import * as THREE from 'three';
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -214,28 +215,6 @@
             audioDataArray = new Uint8Array(audioAnalyser.frequencyBinCount);
             isAudioSetup = true;
         }
-
-        // === SIMPLE AUDIO HELPERS (AUTO-GENERATED) ===
-        function playBgMusic() {
-            const bg = document.getElementById('audio-bg');
-            if (!bg) return;
-            if (!isAudioSetup) setupAudioSystem();
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            if (bg.paused) {
-                bg.volume = 0.6;
-                bg.play().catch(()=>{});
-            }
-        }
-        function stopBgMusic() {
-            const bg = document.getElementById('audio-bg');
-            if (!bg) return;
-            bg.pause();
-            bg.currentTime = 0;
-        }
-        // === END AUDIO HELPERS ===
-    
 
         function initVisualizer2D() {
             visualizerCanvas = document.getElementById('visualizer-canvas');
@@ -598,28 +577,22 @@
             } requestAnimationFrame(predictWebcam);
         }
 
-                }
-        function changeState(newState) {
-            const now = Date.now();
-            if (now - lastActionTime < 1000) return;
-            if (appState === newState) return;
-            lastActionTime = now;
-
-            // AUDIO LOGIC: background music everywhere,
-            // except when entering CARROT (PEN)
-            if (newState === 'TRANSITION_TO_PEN' || newState === 'PEN') {
-                stopBgMusic();
-            } else {
-                playBgMusic();
-            }
-
-            if (newState === 'TRANSITION_TO_PEN') updateStatus("Transforming to Carrot...");
-            else if (newState === 'BACK_TO_FOX') updateStatus("Returning to Fox...");
-            else if (newState === 'SLIDESHOW') updateStatus("Our Memories ❤️");
-            else if (newState === 'VIEW_PHOTO') updateStatus("Look at this!");
-
-            appState = newState;
+        function stopAllAudio() {
+            const a1 = document.getElementById('audio-bg'); const a2 = document.getElementById('audio-letter');
+            if (a1) { a1.pause(); a1.currentTime = 0; } if (a2) { a2.pause(); a2.currentTime = 0; }
         }
+        function changeState(newState) {
+            const now = Date.now(); if (now - lastActionTime < 1000) return; if (appState === newState) return; lastActionTime = now; 
+            if (newState === 'TRANSITION_TO_PEN') { 
+                stopAllAudio(); 
+                const a1 = document.getElementById('audio-bg'); 
+                if(a1) { 
+                    if(!isAudioSetup) setupAudioSystem();
+                    if(audioContext && audioContext.state === 'suspended') audioContext.resume();
+                    a1.play().catch(e=>console.log("Audio block")); 
+                } 
+                updateStatus("Transforming to Carrot..."); 
+            }
             else if (newState === 'READING_LETTER') { stopAllAudio(); const a2 = document.getElementById('audio-letter'); if(a2) a2.play().catch(e=>console.log("Audio block")); updateStatus("Opening..."); }
             else if (newState === 'BACK_TO_FOX') { stopAllAudio(); updateStatus("Returning to Fox..."); }
             else if (newState === 'SLIDESHOW') updateStatus("Our Memories (Heart Detected) ❤️");
@@ -640,7 +613,6 @@
             }
             init();
         }
-        document.addEventListener('click', () => { playBgMusic(); }, { once: true });
         _0xInit();
     </script>
 </body>
