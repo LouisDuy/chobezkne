@@ -103,8 +103,7 @@
     </div>
     <div id="webcam-wrapper"><video id="webcam" autoplay playsinline muted></video><div id="status-bar">Init...</div></div>
     
-    <audio id="audio-bg" src="./audio2.mp3"
-    <audio id="audio-pen" src="./audio1.m4a" loop></audio> loop></audio>
+    <audio id="audio-bg" src="./audio.m4a" loop></audio>
     
     <script type="module">
         import * as THREE from 'three';
@@ -216,15 +215,9 @@
             isAudioSetup = true;
         }
 
-        
         // === SIMPLE AUDIO HELPERS (AUTO-GENERATED) ===
         function playBgMusic() {
             const bg = document.getElementById('audio-bg');
-            const pen = document.getElementById('audio-pen');
-            if (pen) {
-                pen.pause();
-                pen.currentTime = 0;
-            }
             if (!bg) return;
             if (!isAudioSetup) setupAudioSystem();
             if (audioContext && audioContext.state === 'suspended') {
@@ -235,25 +228,13 @@
                 bg.play().catch(()=>{});
             }
         }
-        function playPenMusic() {
+        function stopBgMusic() {
             const bg = document.getElementById('audio-bg');
-            const pen = document.getElementById('audio-pen');
-            if (bg) {
-                bg.pause();
-                bg.currentTime = 0;
-            }
-            if (!pen) return;
-            if (!isAudioSetup) setupAudioSystem();
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            if (pen.paused) {
-                pen.volume = 0.8;
-                pen.play().catch(()=>{});
-            }
+            if (!bg) return;
+            bg.pause();
+            bg.currentTime = 0;
         }
         // === END AUDIO HELPERS ===
-
     
 
         function initVisualizer2D() {
@@ -624,22 +605,13 @@
             if (appState === newState) return;
             lastActionTime = now;
 
-            // AUDIO LOGIC:
-            // - Background music (audio2.mp3) everywhere
-            // - Switch to carrot music (audio1.m4a) when entering PEN
+            // AUDIO LOGIC: background music everywhere,
+            // except when entering CARROT (PEN)
             if (newState === 'TRANSITION_TO_PEN' || newState === 'PEN') {
-                playPenMusic();
+                stopBgMusic();
             } else {
                 playBgMusic();
             }
-
-            if (newState === 'TRANSITION_TO_PEN') updateStatus("Transforming to Carrot...");
-            else if (newState === 'BACK_TO_FOX') updateStatus("Returning to Fox...");
-            else if (newState === 'SLIDESHOW') updateStatus("Our Memories ❤️");
-            else if (newState === 'VIEW_PHOTO') updateStatus("Look at this!");
-
-            appState = newState;
-        }
 
             if (newState === 'TRANSITION_TO_PEN') updateStatus("Transforming to Carrot...");
             else if (newState === 'BACK_TO_FOX') updateStatus("Returning to Fox...");
